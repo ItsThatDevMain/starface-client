@@ -15,8 +15,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Widget
-        extends Feature {
+public class Widget extends Feature {
+    // Black & White Color Scheme
+    private static final int COLOR_HEADER = 0xFF1A1A1A;          // Dark gray header
+    private static final int COLOR_HEADER_BORDER = 0xFF333333;   // Medium gray border
+    private static final int COLOR_BODY = 0xE6000000;            // Semi-transparent black body
+    private static final int COLOR_BODY_BORDER = 0xFF1A1A1A;     // Dark border
+    private static final int COLOR_TEXT = 0xFFFFFFFF;            // White text
+    private static final int COLOR_ACCENT = 0xFFFFFFFF;          // White accent
+    private static final int COLOR_HOVER = 0x30FFFFFF;           // Subtle white hover
+    
     protected GuiGraphics context;
     private final List<Item> items = new ArrayList<>();
     public boolean drag;
@@ -50,12 +58,48 @@ public class Widget
         this.context = context;
         this.drag(mouseX, mouseY);
         float totalItemHeight = this.open ? this.getTotalItemHeight() - 2.0f : 0.0f;
-        int color = ClickGui.getInstance().topColor.getValue().getRGB();
-        context.fill(this.x, this.y - 1, this.x + this.width, this.y + this.height - 6, ClickGui.getInstance().rainbow.getValue() ? ColorUtil.rainbow(ClickGui.getInstance().rainbowHue.getValue()).getRGB() : color);
+        
+        boolean isHovering = this.isHovering(mouseX, mouseY);
+        
+        // Draw header background
+        context.fill(this.x, this.y - 1, this.x + this.width, this.y + this.height - 6, 
+                     isHovering ? COLOR_HEADER_BORDER : COLOR_HEADER);
+        
+        // Draw header top accent line (white)
+        context.fill(this.x, this.y - 1, this.x + this.width, this.y, COLOR_ACCENT);
+        
+        // Draw header bottom border
+        context.fill(this.x, this.y + this.height - 7, this.x + this.width, this.y + this.height - 6, 
+                     COLOR_HEADER_BORDER);
+        
         if (this.open) {
-            RenderUtil.rect(context, this.x, (float) this.y + 12.5f, this.x + this.width, (float) (this.y + this.height) + totalItemHeight, 0x77000000);
+            // Draw body background
+            RenderUtil.rect(context, this.x, (float) this.y + 12.5f, this.x + this.width, 
+                          (float) (this.y + this.height) + totalItemHeight, COLOR_BODY);
+            
+            // Draw body border
+            // Left border
+            context.fill(this.x, this.y + this.height - 6, this.x + 1, 
+                        (int)((float) (this.y + this.height) + totalItemHeight), COLOR_BODY_BORDER);
+            // Right border
+            context.fill(this.x + this.width - 1, this.y + this.height - 6, this.x + this.width, 
+                        (int)((float) (this.y + this.height) + totalItemHeight), COLOR_BODY_BORDER);
+            // Bottom border
+            context.fill(this.x, (int)((float) (this.y + this.height) + totalItemHeight) - 1, 
+                        this.x + this.width, (int)((float) (this.y + this.height) + totalItemHeight), 
+                        COLOR_BODY_BORDER);
         }
-        drawString(this.getName(), (float) this.x + 3.0f, (float) this.y - 4.0f - (float) OyVeyGui.getClickGui().getTextOffset(), -1);
+        
+        // Draw category name
+        drawString(this.getName().toUpperCase(), (float) this.x + 3.0f, 
+                  (float) this.y - 4.0f - (float) OyVeyGui.getClickGui().getTextOffset(), COLOR_TEXT);
+        
+        // Draw expand/collapse indicator
+        String indicator = this.open ? "-" : "+";
+        int indicatorWidth = mc.font.width(indicator);
+        drawString(indicator, (float) (this.x + this.width - indicatorWidth - 3), 
+                  (float) this.y - 4.0f - (float) OyVeyGui.getClickGui().getTextOffset(), COLOR_TEXT);
+        
         ScissorUtil.enable(context, x, 0, x + width, mc.getWindow().getGuiScaledHeight());
 
         if (this.open) {
