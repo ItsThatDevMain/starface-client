@@ -9,7 +9,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.material.Fluids;
 
-public class AdvancedMovement {
+public class Strafe {
     
     private static final Minecraft mc = Minecraft.getInstance();
     
