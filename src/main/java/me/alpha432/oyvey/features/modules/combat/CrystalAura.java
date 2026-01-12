@@ -26,7 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AdvancedCrystalAura {
+public class CrystalAura {
     private final Minecraft mc = Minecraft.getInstance();
     
     // Settings
