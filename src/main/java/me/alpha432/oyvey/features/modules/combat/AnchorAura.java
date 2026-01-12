@@ -19,7 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.ItemStack;
 
-public class SequenceAnchorAura {
+public class AnchorAura {
     private final Minecraft mc = Minecraft.getInstance();
     
     // Settings
