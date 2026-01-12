@@ -17,6 +17,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class OyVeyGui extends Screen {
+    // Black & White Color Scheme
+    public static final int COLOR_BACKGROUND = 0x78000000;        // Semi-transparent black
+    public static final int COLOR_PANEL = 0xFF1A1A1A;            // Dark gray
+    public static final int COLOR_PANEL_BORDER = 0xFF333333;     // Medium gray
+    public static final int COLOR_BUTTON = 0xFF2A2A2A;           // Dark button
+    public static final int COLOR_BUTTON_HOVER = 0xFF404040;     // Lighter on hover
+    public static final int COLOR_BUTTON_ACTIVE = 0xFFFFFFFF;    // White when active
+    public static final int COLOR_TEXT = 0xFFFFFFFF;             // White text
+    public static final int COLOR_TEXT_SECONDARY = 0xFFAAAAAA;   // Gray text
+    public static final int COLOR_ACCENT = 0xFFFFFFFF;           // White accent
+    public static final int COLOR_DIVIDER = 0xFF2A2A2A;          // Divider line
+    
     private static OyVeyGui INSTANCE;
     private static Color colorClipboard = null;
 
@@ -64,8 +76,45 @@ public class OyVeyGui extends Screen {
     @Override
     public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         Item.context = context;
-        context.fill(0, 0, context.guiWidth(), context.guiHeight(), new Color(0, 0, 0, 120).hashCode());
+        
+        // Render black background with subtle transparency
+        context.fill(0, 0, context.guiWidth(), context.guiHeight(), COLOR_BACKGROUND);
+        
+        // Render subtle grid pattern for visual depth
+        renderGrid(context);
+        
+        // Render all widgets
         this.widgets.forEach(components -> components.drawScreen(context, mouseX, mouseY, delta));
+        
+        // Render client name/watermark
+        renderWatermark(context);
+    }
+    
+    private void renderGrid(GuiGraphics context) {
+        int gridSize = 25;
+        int gridColor = 0x0A0A0A0A; // Very subtle grid with transparency
+        
+        // Vertical lines
+        for (int x = 0; x < context.guiWidth(); x += gridSize) {
+            context.fill(x, 0, x + 1, context.guiHeight(), gridColor);
+        }
+        
+        // Horizontal lines
+        for (int y = 0; y < context.guiHeight(); y += gridSize) {
+            context.fill(0, y, context.guiWidth(), y + 1, gridColor);
+        }
+    }
+    
+    private void renderWatermark(GuiGraphics context) {
+        String watermark = "OYVEY";
+        int watermarkWidth = this.font.width(watermark);
+        int watermarkX = context.guiWidth() - watermarkWidth - 5;
+        int watermarkY = context.guiHeight() - this.font.lineHeight - 5;
+        
+        // Shadow effect
+        context.drawString(this.font, watermark, watermarkX + 1, watermarkY + 1, 0x50000000, false);
+        // Main text
+        context.drawString(this.font, watermark, watermarkX, watermarkY, COLOR_TEXT_SECONDARY, false);
     }
 
     @Override
@@ -106,9 +155,11 @@ public class OyVeyGui extends Screen {
     public boolean isPauseScreen() {
         return false;
     }
+    
     @Override
     public void renderBackground(GuiGraphics context, int mouseX, int mouseY, float delta) {
-    }//ignore 1.21.8 blur thing
+        // Ignore 1.21.8 blur thing
+    }
 
     public final ArrayList<Widget> getComponents() {
         return this.widgets;
