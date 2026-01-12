@@ -10,7 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class OyVey implements ModInitializer, ClientModInitializer {
-    public static final String NAME = "OyVey";
+    public static final String NAME = "Starface ⭐";
     public static final String VERSION = SharedConstants.getCurrentVersion().name();
     public static float TIMER = 1f;
 
