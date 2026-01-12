@@ -1,5 +1,8 @@
-package me.alpha432.oyvey.util;
+package me.alpha432.oyvey.features.modules.movement;
 
+import me.alpha432.oyvey.features.modules.Module;
+import me.alpha432.oyvey.features.settings.Setting;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
